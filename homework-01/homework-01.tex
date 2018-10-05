@@ -1,0 +1,118 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage[russian]{babel}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\begin{document}
+
+\section{Домашняя работа(Мироев Д.Ш.)}
+
+\newcommand{\limit}[0]{\displaystyle{\lim_{x \to \infty}}}
+
+\begin{enumerate}
+
+\item Эквивалентны ли следующие факты?
+
+\begin{enumerate}
+\item $f = \Theta(g)$
+\item $\limit \frac{f(n)}{g(n)} = \mathcal{O}(1)$ 
+\end{enumerate}
+
+Из (b) следует (a):
+
+\begin{itemize}
+\item $\limit \frac{f(n)}{g(n)} = C(> 0)$
+\item $\forall \varepsilon>0\ \exists N\ \forall n>N : \left|\frac{f(n)}{g(n)}-C\right|<\varepsilon$
+\item $\forall \varepsilon>0\ \exists N\ \forall n>N : -\varepsilon<\frac{f(n)}{g(n)}-C<\varepsilon$
+\item $\forall \varepsilon>0\ \exists N\ \forall n>N : C-\varepsilon<\frac{f(n)}{g(n)}<C+\varepsilon$
+\item $\forall \varepsilon>0\ \exists N\ \forall n>N : (C-\varepsilon)g(n)<f(n)<(C+\varepsilon)g(n)$
+\item $\exists N, C_1(>0), C_2(>0) \forall n>N\ : (C-\varepsilon)g(n)<f(n)<(C+\varepsilon)g(n)$
+\item $f(n) = \Theta(g(n))$
+\end{itemize}
+
+Но из (a) не следует (b). Пример:
+
+$f(n)=n\ \mathrm{mod}\ 2$ \\
+$g(n)=1$
+
+$n\ \mathrm{mod}\ 2 = \Theta(1)$,\\
+но $\limit \frac{n\ \mathrm{mod}\ 2}{1}$ не существует.
+
+\item Дайте ответ для двух случаев $\mathbb{N} \rightarrow \mathbb{N}$ и $\mathbb{N} \rightarrow \mathbb{R}_{>0}$:
+
+Рассуждения будут аналогичны для двух случаев.
+
+\begin{enumerate}
+\item Если в определении $\mathcal{O}$ опустить условие про $\mathbb{N}$ (т.е.
+оставить просто $\forall n$), будет ли полученное определение эквивалентно исходному?
+
+$\exists N, C(>0)\ \forall n \geqslant N : f(n) \leqslant C \cdot g(n)$\\
+Рассмотрим $A = \mathrm{max} \{\frac{f(n)}{C\cdot g(n)} \mid n < N\}$\\
+и $C_{1} = C \cdot A$.\\
+Тогда $\exists C_{1}(>0)\ \forall n\ : f(n) \leqslant C_{1} \cdot g(n)$.\\
+При $n \geqslant N$ это очевидно. Рассмотрим $n < N$:\\
+$f(n) = (C \cdot g(n)) \cdot \frac{f(n)}{C \cdot g(n)} \leqslant (C \cdot g(n)) A = C_{1} \cdot g(n)$
+
+Ответ: можно.
+
+\item Тот же вопрос про $o$.
+
+Рассмотрим пример $f(n) = n$ и $g(n) = n^2$.\\
+$\forall C(>0)\ \exists N\ \forall n(>N) : n < Cn^2$\\
+$\forall C(>0)\ \exists N\ \forall n(>N) : n - Cn^2 < 0$\\
+$\forall C(>0)\ \exists N\ \forall n(>N) : n(1 - Cn) < 0$ \\
+$\forall C(>0)\ \exists N\ \forall n(>N) : 1 - Cn < 0$\\
+$\forall C(>0)\ \exists N\ \forall n(>N) : n > \frac{1}{C}$\\
+Отсюда $N = \ceil[\Big]{\frac{1}{C}}$
+
+Ответ: нельзя.
+
+\end{enumerate}
+
+\item Продолжим отношение ``$\preceq$'' на функциях до отношения на классах
+эквивалентности по отношению ``$\sim$'' эквивалентности введённому на паре.
+Правда ли, что получится отношение линейного порядка? То есть $\forall x, y :
+(x \preceq y) \vee (y \preceq x)$.
+
+В классе мы доказали разумность определения ``$\preceq$'' для классов
+эквивалентности по отношению ``$\sim$'', то есть
+
+$\forall f, f' (f \sim f') \forall g, g' (g \sim g') : (f \preceq g) \rightarrow (f' \preceq g')$.
+
+Поэтому можно вместо отношения на классах рассмотреть отношение на представителях.
+Но для функции ``$\preceq$'' не является отношением линейного порядка:
+
+$f(n) = 
+     \begin{cases}
+       \text{1,} &\text{если n-\text{чётн.}}\\
+       \text{n,} &\text{если n-\text{нечётн.}}\\
+     \end{cases} 
+$
+
+$
+g(n) = 
+     \begin{cases}
+       \text{1,} &\text{если n-\text{нечётн.}}\\
+       \text{n,} &\text{если n-\text{чётн.}}\\
+     \end{cases} 
+$
+
+$f \neq \mathcal{O}(g)$ и $g \neq \mathcal{O}(f)$.
+
+Значит и для классов ``$\preceq$'' не является отношением линейного порядка.
+
+\item Покажите, что: $g(n) = o(f (n)) \Rightarrow f (n) + g(n) = \Theta(f (n))$.
+
+Доказательство:
+
+$g(n) = o(f(n)) \Leftrightarrow \forall C(>0) \exists N \forall n(>N) : g(n) < C \cdot f(n)$\\
+$g(n) = o(f(n)) \Leftrightarrow \forall C(>0) \exists N \forall n(>N) : g(n) + f(n) < (C + 1) \cdot f(n)$\\
+
+\end{enumerate}
+
+\end{document}
